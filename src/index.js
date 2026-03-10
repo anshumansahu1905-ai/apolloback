@@ -4,6 +4,9 @@ import { verifyjwt } from "./middlewares/verifyJWT.js";
 import patientRouter from "./routes/patientRouter.js";
 import doctorRouter from "./routes/doctorRouter.js";
 import vitalsRouter from "./routes/vitalsRouter.js";
+import riskLogRouter from "./routes/riskLogRouter.js";
+import alertRouter from "./routes/alertRouter.js";
+import doctorDashboardRouter from "./routes/doctorDashboardRouter.js";
 
 
 import cors from "cors";
@@ -29,6 +32,9 @@ app.get('/getuser', verifyjwt, getUser);
 app.use("/patients", patientRouter);
 app.use("/doctors", doctorRouter);
 app.use("/vitals", vitalsRouter);
+app.use("/risk", riskLogRouter);
+app.use("/alerts", alertRouter);
+app.use("/doctor/dashboard", doctorDashboardRouter);
 
 
 

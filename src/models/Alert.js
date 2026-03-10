@@ -108,6 +108,17 @@ alertSchema.statics.createFromRiskLog = async function (
 ) {
   const severity = riskLog.severityLevel;
 
+  const existingAlert = await this.findOne({
+        patientId,
+        severityLevel: riskLog.severityLevel,
+        resolved: false
+    });
+
+    if (existingAlert) {
+        return existingAlert; // avoid duplicate alerts
+    }
+
+
   if (severity === "Low") return null;
 
   let message = "Health risk detected.";

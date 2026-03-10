@@ -7,6 +7,9 @@ import Alert from "../models/Alert.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
 import ErrorWrapper from "../utils/ErrorWrapper.js";
 
+import { predictRisk } from "../services/aiService.js";
+import { handleAlertFromRisk } from "../services/alertService.js";
+
 export const recordVitals = ErrorWrapper(async (req, res) => {
 
     const patientId = req.user.userId;
@@ -21,6 +24,7 @@ export const recordVitals = ErrorWrapper(async (req, res) => {
         bmi,
         sleepHours
     } = req.body;
+    
 
     if (!heartRate || !bloodPressure || !spo2) {
         throw new ErrorHandler(400, "Missing required vitals data");
@@ -34,6 +38,19 @@ export const recordVitals = ErrorWrapper(async (req, res) => {
 
     const vitals = await Vitals.create({
         patientId,
+        heartRate,
+        bloodPressure,
+        spo2,
+        respiratoryRate,
+        bodyTemperature,
+        bloodSugar,
+        bmi,
+        sleepHours
+    });
+
+    //const prediction = await predictRisk(vitals);
+
+    const prediction = await predictRisk({
         heartRate,
         bloodPressure,
         spo2,
@@ -75,6 +92,7 @@ export const recordVitals = ErrorWrapper(async (req, res) => {
         }
     });
 
+        /*
     if (riskLog.severityLevel === "High" || riskLog.severityLevel === "Critical") {
 
         await Alert.createFromRiskLog(
@@ -83,7 +101,15 @@ export const recordVitals = ErrorWrapper(async (req, res) => {
             vitals._id
         );
 
-    }
+    }*/
+
+    await handleAlertFromRisk({
+        patientId,
+        vitalsId: vitals._id,
+        riskLogId: riskLog._id,
+        severityLevel: riskLog.severityLevel
+    });
+
 
     res.status(201).json({
         success: true,

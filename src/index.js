@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import express from "express";
+import cookieParser from "cookie-parser";
+
 import { verifyjwt } from "./middlewares/verifyJWT.js";
 import patientRouter from "./routes/patientRouter.js";
 import doctorRouter from "./routes/doctorRouter.js";
@@ -13,6 +15,11 @@ import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
 
 app.use(cors({
     origin: process.env.CORS_ORIGINS,

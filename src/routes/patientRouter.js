@@ -7,9 +7,9 @@ import {
   getPatientProfile,
   updatePatientProfile,
   getChronicPatients
-} from "../controllers/patientsController.js";
+} from "../controllers/patients.js";
 
-import verifyJWT from "../middlewares/verifyJWT.js";
+import { verifyJWT } from "../middlewares/verifyJWT.js";
 
 const router = express.Router();
 

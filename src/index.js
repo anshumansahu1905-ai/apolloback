@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import express from "express";
 import cookieParser from "cookie-parser";
 
-import { verifyjwt } from "./middlewares/verifyJWT.js";
+import { verifyJWT } from "./middlewares/verifyJWT.js";
 import patientRouter from "./routes/patientRouter.js";
 import doctorRouter from "./routes/doctorRouter.js";
 import vitalsRouter from "./routes/vitalsRouter.js";
@@ -34,7 +34,7 @@ const getUser = (req, res, next) => {
     }
     return res.status(200).json({ user });
 }
-app.get('/getuser', verifyjwt, getUser);
+app.get('/getuser', verifyJWT, getUser);
 
 app.use("/patients", patientRouter);
 app.use("/doctors", doctorRouter);

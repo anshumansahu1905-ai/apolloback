@@ -166,8 +166,8 @@ doctorSchema.methods.getPatientCount = function () {
   return this.assignedPatients.length;
 };
 
-doctorSchema.index({ email: 1 });
-doctorSchema.index({ licenseNumber: 1 });
+//doctorSchema.index({ email: 1 });
+//doctorSchema.index({ licenseNumber: 1 });
 
 const Doctor = mongoose.model("Doctor", doctorSchema);
 

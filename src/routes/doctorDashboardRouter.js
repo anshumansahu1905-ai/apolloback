@@ -1,6 +1,6 @@
 import express from "express";
 import { getDoctorDashboard } from "../controllers/doctorDashboardController.js";
-import verifyJWT from "../middlewares/verifyJWT.js";
+import { verifyJWT } from "../middlewares/verifyJWT.js";
 
 const doctorDashboardRouter = express.Router();
 

@@ -11,7 +11,7 @@ import {
   deleteAlert
 } from "../controllers/alertController.js";
 
-import verifyJWT from "../middlewares/verifyJWT.js";
+import { verifyJWT } from "../middlewares/verifyJWT.js";
 
 const alertRouter = express.Router();
 

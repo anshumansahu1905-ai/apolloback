@@ -9,7 +9,7 @@ import {
   getDoctorPatientVitals
 } from "../controllers/vitalsController.js";
 
-import verifyJWT from "../middlewares/verifyJWT.js";
+import { verifyJWT } from "../middlewares/verifyJWT.js";
 
 const router = express.Router();
 

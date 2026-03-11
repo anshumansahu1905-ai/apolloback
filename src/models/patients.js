@@ -204,9 +204,9 @@ patientSchema.virtual("ageGroup").get(function () {
   return "Senior";
 });
 
-patientSchema.index({ email: 1 });
-patientSchema.index({ username: 1 });
-patientSchema.index({ phone: 1 });
+//patientSchema.index({ email: 1 });
+//patientSchema.index({ username: 1 });
+//patientSchema.index({ phone: 1 });
 
 const patients = mongoose.model("patients", patientSchema);
 export default patients;

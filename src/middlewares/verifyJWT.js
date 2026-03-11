@@ -3,7 +3,7 @@ import patients from "../models/patients.js";
 import ErrorWrapper from "../utils/ErrorWrapper.js";
 import ErrorHandler from "../utils/ErrorHandler.js";
 
-export const verifyjwt = ErrorWrapper(async (req, res, next) => {
+export const verifyJWT = ErrorWrapper(async (req, res, next) => {
     const incomingRefreshToken = req.cookies.RefreshToken;
     const incomingAccessToken = req.cookies.AccessToken;
     // console.log(incomingRefreshToken, incomingAccessToken);

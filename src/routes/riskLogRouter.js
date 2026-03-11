@@ -11,7 +11,7 @@ import {
   deleteRiskLog
 } from "../controllers/riskLogController.js";
 
-import verifyJWT from "../middlewares/verifyJWT.js";
+import { verifyJWT }from "../middlewares/verifyJWT.js";
 
 const riskLogRouter = express.Router();
 

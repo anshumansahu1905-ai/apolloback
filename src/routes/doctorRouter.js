@@ -11,7 +11,7 @@ import {
   getAssignedPatients
 } from "../controllers/doctorsController.js";
 
-import verifyJWT from "../middleware/authMiddleware.js";
+import { verifyJWT } from "../middlewares/verifyJWT.js";
 
 const router = express.Router();
 

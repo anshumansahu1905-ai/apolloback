@@ -77,19 +77,18 @@ const doctorSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-doctorSchema.pre("save", function (next) {
-  if (!this.isModified("password")) return next();
+doctorSchema.pre("save", async function () {
 
-  const doctor = this;
+  // Only hash when password is new or changed
+  if (!this.isModified("password")) return;
 
-  bcrypt.hash(doctor.password, 10, (err, hash) => {
-    if (err) {
-      return next(err);
-    }
+  try {
+    this.password = await bcrypt.hash(this.password, 10);
+  } catch (err) {
+    // Throwing here stops the save operation
+    throw new Error("Password hashing failed");
+  }
 
-    doctor.password = hash;
-    next();
-  });
 });
 
 doctorSchema.methods.isPasswordCorrect = async function (enteredPassword) {
@@ -97,8 +96,7 @@ doctorSchema.methods.isPasswordCorrect = async function (enteredPassword) {
 };
 
 doctorSchema.methods.updatePassword = async function (newPassword) {
-  const hash = await bcrypt.hash(newPassword, 10);
-  this.password = hash;
+  this.password = newPassword;
   await this.save();
 };
 

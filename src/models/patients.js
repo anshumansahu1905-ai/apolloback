@@ -82,25 +82,30 @@ const patientSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-patientSchema.pre('save', function (next) {
-  
-    if (!this.isModified("password")) return next();
+patientSchema.pre("save", async function () {
 
-    const user = this;
-    bcrypt.hash(user.password, 10, (err, hash) => {
-        if (err) {
-            return next(err);
-        }
-        user.password = hash;
-        console.log(user)
-        next();
-    });
+  // Only hash when password is new or changed
+  if (!this.isModified("password")) return;
+
+  try {
+    this.password = await bcrypt.hash(this.password, 10);
+  } catch (err) {
+    // Throwing here stops the save operation
+    throw new Error("Password hashing failed");
+  }
+
 });
+
 
 patientSchema.methods.isPasswordCorrect = async function (enteredPassword) {
     const user = this;
     return await bcrypt.compare(enteredPassword, user.password);
 }
+
+patientSchema.methods.updatePassword = async function (newPassword) {
+  this.password = newPassword;
+  await this.save();
+};
 
 patientSchema.methods.generateRefreshToken = async function () {
     return jwt.sign(
@@ -129,11 +134,6 @@ patientSchema.methods.generateAccessToken = async function () {
         });
 }
 
-patientSchema.methods.updatePassword = async function (newPassword) {
-  const hash = await bcrypt.hash(newPassword, 10);
-  this.password = hash;
-  await this.save();
-};
 
 patientSchema.methods.toSafeObject = function () {
   const patient = this.toObject();

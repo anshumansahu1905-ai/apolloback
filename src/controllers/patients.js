@@ -10,7 +10,7 @@ export const postSignup = ErrorWrapper(async function (req, res, next) {
     const { username, password, email, name } = req.body;
     const incomingFields = Object.keys(req.body);
     // How to identify the missingFields?
-    const requiredFields = ["username", "password", "email", "name"];
+    const requiredFields = ["username", "password", "email", "name","age","gender","phone","bloodGroup","address","emergencyContacts"];
     const missingFields = requiredFields.filter((field) => !incomingFields.includes(field));
     // To read image we need to use multer
     if (missingFields.length > 0) {
@@ -42,6 +42,12 @@ export const postSignup = ErrorWrapper(async function (req, res, next) {
             password,
             email,
             name,
+            age,    
+            gender,
+            phone,
+            bloodGroup,
+            address,
+            emergencyContacts
             //image: cloudinaryResponse.secure_url
         });
 

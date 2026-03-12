@@ -5,9 +5,9 @@ import ErrorWrapper from "../utils/ErrorWrapper.js";
 
 export const postDoctorSignup = ErrorWrapper(async (req, res) => {
 
-    const { username, password, email, name, licenseNumber, specialization } = req.body;
+    const { username, password, email, name, licenseNumber, specialization, phone } = req.body;
 
-    if (!username || !password || !email || !name || !licenseNumber || !specialization) {
+    if (!username || !password || !email || !name || !licenseNumber || !specialization || !phone) {
         throw new ErrorHandler(400, "Please provide all required fields");
     }
 
@@ -24,6 +24,7 @@ export const postDoctorSignup = ErrorWrapper(async (req, res) => {
         password,
         email,
         name,
+        phone,
         licenseNumber,
         specialization
     });
@@ -61,9 +62,9 @@ const generateAccessTokenAndRefreshToken = async (doctorId) => {
 
 export const postDoctorLogin = ErrorWrapper(async (req, res) => {
 
-    const { username, email, password } = req.body;
+    const { username, licenseNumber, password } = req.body;
 
-    if (!username && !email) {
+    if (!username && !licenseNumber) {
         throw new ErrorHandler(400, "Enter username or email");
     }
 
@@ -72,7 +73,7 @@ export const postDoctorLogin = ErrorWrapper(async (req, res) => {
     }
 
     let doctor = await Doctor.findOne({
-        $or: [{ username }, { email }]
+        $or: [{ username }, { licenseNumber }]
     });
 
     if (!doctor) {

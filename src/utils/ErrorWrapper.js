@@ -1,17 +1,20 @@
 const ErrorWrapper = function (cb) {
     return async function (req, res, next) {
-        try{
+        try {
             await cb(req, res, next);
-        }
-        catch(error){
-            res.status(error.statusCode).json({
-                status: error.statusCode,
-                message: error.message,
-                success: false
-            })
-        }
-    }
-}
+        } catch (error) {
 
+            const statusCode =
+                Number.isInteger(error?.statusCode) ? error.statusCode : 500;
+
+            res.status(statusCode).json({
+                status: statusCode,
+                message: error?.message || "Internal Server Error",
+                success: false
+            });
+
+        }
+    };
+};
 
 export default ErrorWrapper;
